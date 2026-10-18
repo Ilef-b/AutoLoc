@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,10 +34,14 @@ public class Agence {
     @Column(length = 20)
     private String telephone;
 
+    // 1 Agence -> N Employe : cote inverse, le lien est gere par l'attribut "agence" de Employe
+    @JsonIgnore
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     private List<Employe> employes = new ArrayList<>();
+
     // 1 Agence -> N Vehicule : cote inverse, SANS cascade
     // (supprimer une agence ne doit pas supprimer ses vehicules)
+    @JsonIgnore
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     private List<Vehicule> vehicules = new ArrayList<>();
 }
